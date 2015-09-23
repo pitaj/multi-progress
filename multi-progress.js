@@ -38,6 +38,10 @@ MultiProgress.prototype = {
       if (self.terminates === self.bars.length) {
         self.terminate();
       }
+      if (bar.clear) {
+        this.stream.clearLine(index - 1);
+        this.stream.cursorTo(0);
+      }
     };
     bar.update = function(value, options){
       self.update(index, value, options);
