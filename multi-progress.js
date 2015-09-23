@@ -37,7 +37,10 @@ MultiProgress.prototype = {
       self.tick(index, value, options);
     };
     bar.terminate = function() {
-      self.terminates++;
+      if (!bar.terminated) {
+        bar.terminated = true;
+        self.terminates++;
+      }
       if (self.terminates === self.amount) {
         self.terminate();
       }
