@@ -9,6 +9,9 @@ function MultiProgress(stream) {
   multi.cursor = 0;
   multi.bars = [];
   multi.terminates = 0;
+  multi.amount = 0;
+  multi.complete = false;
+  multi.cleared = 0;
 
   return multi;
 }
@@ -35,11 +38,14 @@ MultiProgress.prototype = {
     };
     bar.terminate = function() {
       self.terminates++;
-      if (self.terminates === self.bars.length) {
+      if (self.terminates === self.amount) {
         self.terminate();
       }
       if (bar.clear) {
-        this.stream.clearLine(index - 1);
+        self.cleared++;
+        self.bars.splice(index, 1);
+        self.move(self.bars.length);
+        this.stream.clearLine();
         this.stream.cursorTo(0);
       }
     };
@@ -54,6 +60,7 @@ MultiProgress.prototype = {
     this.move(this.bars.length);
     this.stream.clearLine();
     this.stream.cursorTo(0);
+    this.complete = true;
   },
 
   move: function(index) {
