@@ -21,7 +21,7 @@ MultiProgress.prototype = {
     var index = this.bars.length - 1;
 
     // alloc line
-    this.move(index);
+    this.stream.isTTY && this.move(index);
     this.stream.write('\n');
     this.cursor ++;
 
@@ -47,6 +47,7 @@ MultiProgress.prototype = {
   },
 
   terminate: function() {
+    if (!this.stream.isTTY) return;
     this.move(this.bars.length);
     this.stream.clearLine();
     this.stream.cursorTo(0);
@@ -61,6 +62,7 @@ MultiProgress.prototype = {
   },
 
   tick: function(index, value, options) {
+    if (!this.stream.isTTY) return;
     var bar = this.bars[index];
     if (bar) {
       this.move(index);
@@ -69,6 +71,7 @@ MultiProgress.prototype = {
   },
 
   update: function(index, value, options){
+    if (!this.stream.isTTY) return;
     var bar = this.bars[index];
     if (bar) {
       this.move(index);
