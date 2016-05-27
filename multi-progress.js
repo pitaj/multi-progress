@@ -4,13 +4,18 @@
 var ProgressBar = require("progress");
 
 function MultiProgress(stream) {
-  var multi = Object.create(MultiProgress.prototype);
-  multi.stream = stream || process.stderr;
-  multi.cursor = 0;
-  multi.bars = [];
-  multi.terminates = 0;
+  this.stream = stream || process.stderr;
+  this.cursor = 0;
+  this.bars = [];
+  this.terminates = 0;
 
-  return multi;
+  if (!stream.isTTY) {
+    console.error(new Error('TTY console required'));
+    this.move  = function() {};
+    this.terminate  = function() {};
+    this.tick  = function() {};
+    this.update  = function() {};
+  }
 }
 
 MultiProgress.prototype = {
@@ -47,22 +52,17 @@ MultiProgress.prototype = {
   },
 
   terminate: function() {
-    if (!this.stream.isTTY) return;
     this.move(this.bars.length);
     this.stream.clearLine();
     this.stream.cursorTo(0);
   },
 
   move: function(index) {
-    if(!this.stream.isTTY){
-      return;
-    }
     this.stream.moveCursor(0, index - this.cursor);
     this.cursor = index;
   },
 
   tick: function(index, value, options) {
-    if (!this.stream.isTTY) return;
     var bar = this.bars[index];
     if (bar) {
       this.move(index);
@@ -71,7 +71,6 @@ MultiProgress.prototype = {
   },
 
   update: function(index, value, options){
-    if (!this.stream.isTTY) return;
     var bar = this.bars[index];
     if (bar) {
       this.move(index);
