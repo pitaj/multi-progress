@@ -4,18 +4,21 @@
 var ProgressBar = require("progress");
 
 function MultiProgress(stream) {
-  this.stream = stream || process.stderr;
-  this.cursor = 0;
-  this.bars = [];
-  this.terminates = 0;
+  var multi = Object.create(MultiProgress.prototype);
+  multi.stream = stream || process.stderr;
+  multi.cursor = 0;
+  multi.bars = [];
+  multi.terminates = 0;
 
   if (!stream.isTTY) {
     console.error(new Error('TTY console required'));
-    this.move  = function() {};
-    this.terminate  = function() {};
-    this.tick  = function() {};
-    this.update  = function() {};
+    multi.move  = function() {};
+    multi.terminate  = function() {};
+    multi.tick  = function() {};
+    multi.update  = function() {};
   }
+
+  return multi;
 }
 
 MultiProgress.prototype = {
