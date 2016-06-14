@@ -16,7 +16,7 @@ var emptyObj = {
   move: function () {},
   tick: function () {},
   update: function () {},
-  isTTL: false,
+  isTTY: false,
 };
 
 function MultiProgress(stream) {
@@ -74,9 +74,6 @@ MultiProgress.prototype = {
   },
 
   move: function(index) {
-    if(!this.stream.isTTY){
-      return;
-    }
     this.stream.moveCursor(0, index - this.cursor);
     this.cursor = index;
   },
