@@ -31,14 +31,6 @@ function MultiProgress(stream) {
   multi.bars = [];
   multi.terminates = 0;
 
-  if (!stream.isTTY) {
-    console.error(new Error('TTY console required'));
-    multi.move  = function() {};
-    multi.terminate  = function() {};
-    multi.tick  = function() {};
-    multi.update  = function() {};
-  }
-
   return multi;
 }
 
@@ -50,7 +42,7 @@ MultiProgress.prototype = {
     var index = this.bars.length - 1;
 
     // alloc line
-    this.stream.isTTY && this.move(index);
+    this.move(index);
     this.stream.write('\n');
     this.cursor ++;
 
