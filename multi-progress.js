@@ -3,9 +3,30 @@
 
 var ProgressBar = require("progress");
 
+var emptyObj = {
+  newBar: function () {
+    return {
+      tick: function () {},
+      terminate: function () {},
+      update: function () {},
+      render: function () {},
+    };
+  },
+  terminate: function () {},
+  move: function () {},
+  tick: function () {},
+  update: function () {},
+  isTTY: false,
+};
+
 function MultiProgress(stream) {
   var multi = Object.create(MultiProgress.prototype);
   multi.stream = stream || process.stderr;
+  
+  if (!multi.stream.isTTY) {
+    return emptyObj;
+  }
+  
   multi.cursor = 0;
   multi.bars = [];
   multi.terminates = 0;
