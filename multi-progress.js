@@ -10,6 +10,14 @@ function MultiProgress(stream) {
   multi.bars = [];
   multi.terminates = 0;
 
+  if (!stream.isTTY) {
+    console.error(new Error('TTY console required'));
+    multi.move  = function() {};
+    multi.terminate  = function() {};
+    multi.tick  = function() {};
+    multi.update  = function() {};
+  }
+
   return multi;
 }
 
@@ -21,7 +29,7 @@ MultiProgress.prototype = {
     var index = this.bars.length - 1;
 
     // alloc line
-    this.move(index);
+    this.stream.isTTY && this.move(index);
     this.stream.write('\n');
     this.cursor ++;
 
@@ -53,9 +61,6 @@ MultiProgress.prototype = {
   },
 
   move: function(index) {
-    if(!this.stream.isTTY){
-      return;
-    }
     this.stream.moveCursor(0, index - this.cursor);
     this.cursor = index;
   },
