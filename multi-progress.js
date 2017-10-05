@@ -3,6 +3,34 @@
 
 var ProgressBar = require("progress");
 
+/**
+ * @typedef MultiProgress
+ * @property {(schema: string, options: ProgressBarOptions) => ProgressBar} newBar Create a new progressbar
+ * @property {() => void} terminate Terminate the progress bars
+ * @property {(index: number) => void} move Move the progress bars
+ * @property {(index: number, value: number, options?: any) => void} tick Tick a progres bar
+ * @property {(index: number, value: number, options?: any) => void} update Update a progress bar
+ * @property {boolean} isTTY
+ */
+/**
+ * @typedef ProgressBarOptions
+ * These are keys in the options object you can pass to the progress bar along with total as seen in the example above.
+ * @property {number} total Total number of ticks to complete.
+ * @property {number} [curr] current completed index
+ * @property {string} [head] head character defaulting to complete character
+ * @property {number} [width] The displayed width of the progress bar defaulting to total.
+ * @property {number} [renderThrottle] minimum time between updates in milliseconds defaulting to 16
+ * @property {NodeJS.WritableStream} [stream] The output stream defaulting to stderr.
+ * @property {string} [complete] Completion character defaulting to "=".
+ * @property {string} [incomplete] Incomplete character defaulting to "-".
+ * @property {boolean} [clear] Option to clear the bar on completion defaulting to false.
+ * @property {Function} [callback] Optional function to call when the progress bar completes. 
+ */
+
+
+/**
+ * @type {MultiProgress}
+ */
 var emptyObj = {
   newBar: function () {
     return {
@@ -16,9 +44,15 @@ var emptyObj = {
   move: function () {},
   tick: function () {},
   update: function () {},
-  isTTY: false,
+  isTTY: false
 };
 
+/**
+ * spawn an instance with the optional stream to write to
+ * (use of `new` is optional)
+ * @param {NodeJS.WriteStream} stream 
+ * @returns {MultiProgress}
+ */
 function MultiProgress(stream) {
   var multi = Object.create(MultiProgress.prototype);
   multi.stream = stream || process.stderr;
@@ -33,6 +67,7 @@ function MultiProgress(stream) {
 
   return multi;
 }
+
 
 MultiProgress.prototype = {
   newBar: function(schema, options) {
