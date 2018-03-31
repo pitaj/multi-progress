@@ -10,12 +10,14 @@ var emptyObj = {
       terminate: function () {},
       update: function () {},
       render: function () {},
+      interrupt: function () {},
     };
   },
   terminate: function () {},
   move: function () {},
   tick: function () {},
   update: function () {},
+  interrupt: function () {},
   isTTY: false,
 };
 
@@ -51,6 +53,7 @@ MultiProgress.prototype = {
     bar.otick = bar.tick;
     bar.oterminate = bar.terminate;
     bar.oupdate = bar.update;
+    bar.ointerrupt = bar.interrupt;
     bar.tick = function(value, options) {
       self.tick(index, value, options);
     };
@@ -62,6 +65,9 @@ MultiProgress.prototype = {
     };
     bar.update = function(value, options){
       self.update(index, value, options);
+    };
+    bar.interrupt = function(value) {
+      self.interrupt(index, value);
     };
 
     return bar;
@@ -91,6 +97,14 @@ MultiProgress.prototype = {
     if (bar) {
       this.move(index);
       bar.oupdate(value, options);
+    }
+  },
+
+  interrupt: function(index, value, options) {
+    var bar = this.bars[index];
+    if (bar) {
+      this.move(index);
+      bar.ointerrupt(value, options);
     }
   }
 };
