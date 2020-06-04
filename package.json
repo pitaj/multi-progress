@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/pitaj/multi-progress",
   "dependencies": {
-    "progress": "^1.1.8"
+    "progress": "^2.0.3"
   }
 }
