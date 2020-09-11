@@ -11,7 +11,6 @@ Install with npm: `npm install multi-progress`
 var Multiprogress = require("multi-progress");
 
 // spawn an instance with the optional stream to write to
-// use of `new` is optional
 var multi = new Multiprogress(process.stderr);
 
 // create a progress bar
