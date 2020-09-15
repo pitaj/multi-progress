@@ -42,10 +42,12 @@ module.exports = class MultiProgress {
     var bar = new Progress(schema, options);
     this.bars.push(bar);
     var index = this.bars.length - 1;
+
     // alloc line
     this.move(index);
     this.stream.write('\n');
     this.cursor += 1;
+
     // replace original
     var self = this;
     bar.otick = bar.tick;
@@ -63,6 +65,7 @@ module.exports = class MultiProgress {
     bar.update = function(value, options){
       self.update(index, value, options);
     };
+
     return bar;
   }
 
