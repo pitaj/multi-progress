@@ -25,6 +25,7 @@ module.exports = class MultiProgress {
   constructor(stream) {
     this.stream = stream || process.stderr;
     this.isTTY = this.stream.isTTY;
+
     if (!this.isTTY) {
       return mockInstance;
     }
@@ -35,6 +36,7 @@ module.exports = class MultiProgress {
   
     return this;
   }
+
   newBar(schema, options) {
     options.stream = this.stream;
     var bar = new Progress(schema, options);
@@ -63,15 +65,18 @@ module.exports = class MultiProgress {
     };
     return bar;
   }
+
   terminate() {
     this.move(this.bars.length);
     this.stream.clearLine();
     this.stream.cursorTo(0);
   }
+
   move(index) {
     this.stream.moveCursor(0, index - this.cursor);
     this.cursor = index;
   }
+
   tick(index, value, options) {
     const bar = this.bars[index];
     if (bar) {
@@ -79,6 +84,7 @@ module.exports = class MultiProgress {
       bar.otick(value, options);
     }
   }
+
   update(index, value, options) {
     const bar = this.bars[index];
     if (bar) {
