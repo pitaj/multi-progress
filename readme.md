@@ -6,9 +6,12 @@ This module adds a layer on top of the API of [progress](https://github.com/tj/n
 
 Install with npm: `npm install multi-progress`
 
+`multi-progress@4` requires `progress@2` as a peer dependency.
+If you don't already have `progress@2` as a dependency, add it like so: `npm install progress@2`.
+
 ```js
 // require the library
-var Multiprogress = require("multi-progress");
+var Multiprogress = require('multi-progress');
 
 // spawn an instance with the optional stream to write to
 var multi = new Multiprogress(process.stderr);
